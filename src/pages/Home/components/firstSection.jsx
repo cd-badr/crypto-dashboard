@@ -1,7 +1,21 @@
 
+import { useEffect, useState } from 'react';
 import './firstSection.scss'
 import { IoMdMore } from "react-icons/io";
+import axios from 'axios';
 export const FirstSection = () => {
+
+    const [crypto, setCrypto] = useState([])
+
+    useEffect(() => {
+        axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline-false")
+            .then((res) => {
+                console.table(res.data)
+                setCrypto(res.data)
+            })
+            .catch(err => console.log(err))
+    }, [])
+
     return (
         <>
             <div className="p-5">
@@ -27,8 +41,8 @@ export const FirstSection = () => {
                                 <IoMdMore />
                             </div>
                         </div>
-
-                        <h1 className='text-4xl p-3'>47,5256.5</h1>
+            
+                            <h1 className='text-4xl p-3'>test</h1> 
 
                     </div>
 
@@ -103,28 +117,51 @@ export const FirstSection = () => {
                         <div className="flex w-full flex-row justify-between items-center px-10 pb-5">
                             <h1 className='text-white text-3xl'>Assets To Supplies</h1>
                             <div className='rounded-md h-12 w-12 flex justify-center items-center bg-[#ffffff27] text-white  p-5  outline-none border-[1px] border-[#ffffff17]'>icon</div>
-                    </div>
-                    </div>
-
-                    <div className="flex flex-row justify-evenly pt-5">
-                        <div className="flex flex-row">
-                            <img width={30} src="" alt="" />
-                            <p className='font-bold'>BTC</p>
                         </div>
-
-                        <p>47,554$</p>
-
-                        <div className="flex flex-row gap-5">
-                            <div className='rounded-md h-7 w-23 flex justify-center items-center bg-[#00c32161] text-white  p-5  outline-none border-[1px] border-[#ffffff17]'>BUY</div>
-                            <div className='rounded-md h-7 w-23 flex justify-center items-center bg-[#c3000061] text-white  p-5  outline-none border-[1px] border-[#ffffff17]'>SELL</div>
-
-                        </div>
-
-    
                     </div>
+
+                    {
+                        crypto.map((element, index) =>
+                            <>
+                                <div className="flex flex-row justify-evenly pt-5">
+                                    <div className="flex flex-row items-center gap-5">
+                                        <img className='w-10 ' src={element.image} alt="" />
+                                        <p className='font-bold'>{element.id}</p>
+                                    </div>
+
+                                    <p>{element.current_price}</p>
+
+                                    <div className="flex flex-row gap-5">
+                                        <div className='rounded-md h-7 w-23 flex justify-center items-center bg-[#00c32161] text-white  p-5  outline-none border-[1px] border-[#ffffff17]'>BUY</div>
+                                        <div className='rounded-md h-7 w-23 flex justify-center items-center bg-[#c3000061] text-white  p-5  outline-none border-[1px] border-[#ffffff17]'>SELL</div>
+
+                                    </div>
+
+
+                                </div>
+                            </>
+                        )
+                    }
+
 
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <div className='pt-5 px-5  flex flex-row items-end justify-evenly backdrop-filter blur-4xl'>
                 <div className="opacity-50 w-[650px] h-[300px] bg-[#4d39a7] rounded-tl-full rounded-tr-full blur-[100px] absolute right-[60%] "></div>
